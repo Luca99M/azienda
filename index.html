@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nonno Andrea - Assistente Virtuale</title>
+    <title>Nonno Andrea - Distributore Intelligente</title>
     <style>
         * {
             margin: 0;
@@ -13,288 +13,122 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2c5f2d, #4a7c59);
+            background: radial-gradient(circle at center, #2c5f2d, #1a3d1b);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow: hidden;
         }
         
         .container {
-            background: #fff;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
             border-radius: 25px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
-            height: 700px;
+            height: 720px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
         .character-section {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: linear-gradient(135deg, #87ceeb 0%, #98fb98 50%, #f0e68c 100%);
             position: relative;
             height: 450px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
         
-        .ologram-effect {
+        /* Particelle fluttuanti */
+        .particles {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(90deg, transparent 49%, rgba(0,255,255,0.1) 50%, transparent 51%),
-                linear-gradient(0deg, transparent 49%, rgba(0,255,255,0.05) 50%, transparent 51%);
-            background-size: 3px 3px;
-            pointer-events: none;
-            animation: scan 4s linear infinite;
-        }
-        
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        
-        .character {
-            width: 180px;
-            height: 280px;
-            position: relative;
-            animation: float 3s ease-in-out infinite;
-            z-index: 2;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.02); }
-        }
-        
-        .character-body {
-            position: relative;
-            animation: breathe 4s ease-in-out infinite;
-        }
-        
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        
-        /* Cappello del nonno */
-        .hat {
-            width: 90px;
-            height: 35px;
-            background: linear-gradient(145deg, #8B4513, #A0522D);
-            border-radius: 45px 45px 15px 15px;
-            margin: 0 auto 5px;
-            position: relative;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-        }
-        
-        .hat::after {
-            content: '🌾';
-            position: absolute;
-            right: 10px;
-            top: 5px;
-            font-size: 16px;
-        }
-        
-        .head {
-            width: 85px;
-            height: 85px;
-            background: linear-gradient(145deg, #FDBCB4, #F4A087);
-            border-radius: 50%;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        /* Barba del nonno */
-        .beard {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 25px;
-            background: linear-gradient(145deg, #E0E0E0, #CCCCCC);
-            border-radius: 0 0 25px 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
-        .eyes {
-            position: absolute;
-            top: 28px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 18px;
-        }
-        
-        .eye {
-            width: 14px;
-            height: 14px;
-            background: #fff;
-            border-radius: 50%;
-            position: relative;
-            animation: blink 5s infinite;
-        }
-        
-        .eye::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #2C5F2D;
-            border-radius: 50%;
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            animation: look 8s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 92%, 100% { transform: scaleY(1); }
-            96% { transform: scaleY(0.1); }
-        }
-        
-        @keyframes look {
-            0%, 40% { transform: translateX(0); }
-            45%, 75% { transform: translateX(2px); }
-            80%, 100% { transform: translateX(-1px); }
-        }
-        
-        .nose {
-            position: absolute;
-            top: 42px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 8px;
-            background: #F4A087;
-            border-radius: 50%;
-            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
-        }
-        
-        .mouth {
-            position: absolute;
-            bottom: 35px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 25px;
-            height: 12px;
-            border-bottom: 3px solid #8B4513;
-            border-radius: 0 0 25px 25px;
-            transition: all 0.3s;
-        }
-        
-        .mouth.talking {
-            animation: talk 0.4s infinite alternate;
-        }
-        
-        @keyframes talk {
-            0% { 
-                height: 8px;
-                border-radius: 0 0 15px 15px;
-            }
-            100% { 
-                height: 18px;
-                border-radius: 0 0 30px 30px;
-            }
-        }
-        
-        .body {
-            width: 70px;
-            height: 110px;
-            background: linear-gradient(145deg, #228B22, #32CD32);
-            border-radius: 35px;
-            margin: 15px auto;
-            position: relative;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        /* Bretelle del nonno */
-        .suspenders {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 80px;
-        }
-        
-        .suspender {
-            width: 4px;
-            height: 80px;
-            background: #8B4513;
-            position: absolute;
-            border-radius: 2px;
-        }
-        
-        .suspender.left { left: 8px; }
-        .suspender.right { right: 8px; }
-        
-        .arms {
-            position: absolute;
-            top: 25px;
             width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
         
-        .arm {
-            width: 35px;
-            height: 10px;
-            background: linear-gradient(145deg, #FDBCB4, #F4A087);
-            border-radius: 5px;
+        .particle {
             position: absolute;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: float-particle 8s infinite linear;
         }
         
-        .arm.left {
-            left: -18px;
-            transform-origin: right center;
-            animation: wave-left 4s ease-in-out infinite;
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
+        .particle:nth-child(6) { width: 6px; height: 6px; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 6s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 7s; }
+        
+        @keyframes float-particle {
+            0% { 
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
         
-        .arm.right {
-            right: -18px;
-            transform-origin: left center;
-            animation: wave-right 4s ease-in-out infinite;
+        /* Personaggio 3D */
+        .character-3d {
+            width: 250px;
+            height: 320px;
+            position: relative;
+            z-index: 10;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
-        @keyframes wave-left {
-            0%, 60%, 100% { transform: rotate(-15deg); }
-            30% { transform: rotate(-35deg); }
+        .loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            z-index: 5;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            animation: pulse 1.5s infinite;
         }
         
-        @keyframes wave-right {
-            0%, 60%, 100% { transform: rotate(15deg); }
-            80% { transform: rotate(35deg); }
+        .loading-text.hidden {
+            display: none;
         }
         
         .character-name {
-            color: #FFD700;
-            font-size: 28px;
+            color: #2c5f2d;
+            font-size: 32px;
             font-weight: bold;
             margin: 15px 0 5px;
-            text-shadow: 0 0 15px rgba(255,215,0,0.6);
-            animation: glow 3s ease-in-out infinite alternate;
-            z-index: 2;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 0 0 15px rgba(255,215,0,0.6); }
-            to { text-shadow: 0 0 25px rgba(255,215,0,0.9); }
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+            position: relative;
         }
         
         .subtitle {
-            color: #20c997;
+            color: #228b22;
             font-size: 16px;
             text-align: center;
-            z-index: 2;
+            z-index: 10;
+            position: relative;
+            font-style: italic;
         }
         
         .chat-section {
@@ -302,7 +136,7 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
-            background: #f8f9fa;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
         }
         
         .messages {
@@ -314,31 +148,43 @@
             border-radius: 15px;
             border: 2px solid #e9ecef;
             max-height: 150px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .message {
             margin-bottom: 12px;
-            padding: 12px;
+            padding: 12px 16px;
             border-radius: 18px;
             max-width: 85%;
             animation: slideIn 0.4s ease;
             line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(15px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .bot-message {
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background: linear-gradient(135deg, #28a745, #34ce57);
             color: white;
             margin-right: auto;
             border-bottom-left-radius: 8px;
+            position: relative;
+        }
+        
+        .bot-message::before {
+            content: '👴';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
         }
         
         .user-message {
-            background: #007bff;
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
             margin-left: auto;
             border-bottom-right-radius: 8px;
@@ -346,18 +192,20 @@
         
         .typing-indicator {
             display: none;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             color: #6c757d;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border-radius: 18px;
             margin-right: auto;
             max-width: 85%;
-            border: 1px solid #e9ecef;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .typing-dots span {
             animation: typing 1.4s infinite;
             animation-fill-mode: both;
+            font-size: 18px;
         }
         
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -370,54 +218,89 @@
         
         .voice-controls {
             display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 15px;
+            margin-bottom: 15px;
             align-items: center;
         }
         
         .mic-button {
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: linear-gradient(135deg, #dc3545, #c82333);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 22px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(220,53,69,0.4);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(220,53,69,0.4);
+            position: relative;
+        }
+        
+        .mic-button::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726) border-box;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            animation: rotate-border 3s linear infinite;
+        }
+        
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .mic-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(220,53,69,0.6);
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(220,53,69,0.6);
         }
         
         .mic-button.listening {
             background: linear-gradient(135deg, #28a745, #20c997);
             animation: pulse-mic 1.2s infinite;
-            box-shadow: 0 4px 15px rgba(40,167,69,0.4);
+            box-shadow: 0 6px 20px rgba(40,167,69,0.5);
         }
         
         @keyframes pulse-mic {
-            0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(40, 167, 69, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+            }
+            70% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(40, 167, 69, 0);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
         }
         
         .listening-indicator {
             display: none;
             background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 18px;
+            border-radius: 25px;
             font-size: 14px;
-            animation: pulse 1s infinite;
-            box-shadow: 0 2px 10px rgba(40,167,69,0.3);
+            animation: pulse-text 1s infinite;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
         }
         
         .listening-indicator.active {
             display: block;
+        }
+        
+        @keyframes pulse-text {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
         
         .volume-control {
@@ -430,6 +313,21 @@
         
         .volume-slider {
             width: 80px;
+            height: 6px;
+            border-radius: 3px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.3);
         }
         
         .input-area {
@@ -439,63 +337,46 @@
         
         .input-area input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 16px 20px;
             border: 2px solid #28a745;
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: white;
         }
         
         .input-area input:focus {
             border-color: #20c997;
-            box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+            box-shadow: 0 0 0 4px rgba(40,167,69,0.1);
+            transform: scale(1.02);
         }
         
         .input-area button {
-            padding: 14px 25px;
+            padding: 16px 28px;
             background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(40,167,69,0.3);
         }
         
         .input-area button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40,167,69,0.4);
         }
         
         .voice-status {
             font-size: 12px;
             color: #6c757d;
             text-align: center;
-            margin-bottom: 10px;
-            padding: 5px;
-        }
-        
-        .gesture-excited .character {
-            animation: excited 1.5s ease-in-out;
-        }
-        
-        @keyframes excited {
-            0%, 100% { transform: translateY(0) scale(1); }
-            25% { transform: translateY(-12px) scale(1.05); }
-            50% { transform: translateY(-6px) scale(1.02); }
-            75% { transform: translateY(-9px) scale(1.03); }
-        }
-        
-        .gesture-thinking .head {
-            animation: think 2s ease-in-out;
-        }
-        
-        @keyframes think {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-3deg); }
-            75% { transform: rotate(3deg); }
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(108,117,125,0.1);
+            border-radius: 15px;
         }
         
         @media (max-width: 768px) {
@@ -509,13 +390,13 @@
                 height: 350px;
             }
             
-            .character {
-                width: 150px;
-                height: 230px;
+            .character-3d {
+                width: 200px;
+                height: 250px;
             }
             
             .character-name {
-                font-size: 24px;
+                font-size: 26px;
             }
         }
     </style>
@@ -523,32 +404,21 @@
 <body>
     <div class="container">
         <div class="character-section">
-            <div class="ologram-effect"></div>
-            
-            <div class="character" id="character">
-                <div class="character-body">
-                    <div class="hat"></div>
-                    <div class="head">
-                        <div class="eyes">
-                            <div class="eye"></div>
-                            <div class="eye"></div>
-                        </div>
-                        <div class="nose"></div>
-                        <div class="mouth" id="mouth"></div>
-                        <div class="beard"></div>
-                    </div>
-                    <div class="body">
-                        <div class="suspenders">
-                            <div class="suspender left"></div>
-                            <div class="suspender right"></div>
-                        </div>
-                        <div class="arms">
-                            <div class="arm left"></div>
-                            <div class="arm right"></div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Particelle fluttuanti -->
+            <div class="particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
             </div>
+            
+            <!-- Personaggio 3D -->
+            <div id="character3d" class="character-3d"></div>
+            <div class="loading-text" id="loadingText">Caricamento nonno Andrea...</div>
             
             <div class="character-name">Nonno Andrea</div>
             <div class="subtitle">🌾 Agricoltore da 50 anni</div>
@@ -584,6 +454,10 @@
         </div>
     </div>
 
+    <!-- Three.js per personaggio 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
     <script>
         let isTalking = false;
         let isListening = false;
@@ -591,27 +465,148 @@
         let speechSynthesis = window.speechSynthesis;
         let currentVoice = null;
 
-        // Risposte di nonno Andrea
+        // Three.js variables per personaggio 3D
+        let scene, camera, renderer, character3D, mixer, clock;
+        let mouthBones = [];
+        let isCharacterLoaded = false;
+
+        // Setup Three.js e caricamento personaggio 3D
+        function init3DCharacter() {
+            const container = document.getElementById('character3d');
+            const loadingText = document.getElementById('loadingText');
+            
+            // Setup scene
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, 250/320, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ 
+                alpha: true, 
+                antialias: true 
+            });
+            renderer.setSize(250, 320);
+            renderer.setClearColor(0x000000, 0);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+            
+            clock = new THREE.Clock();
+
+            // Luci
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // Carica il personaggio
+            const loader = new THREE.GLTFLoader();
+            
+            // QUESTO È IL TUO FILE! 
+            const characterPath = './character.glb';
+            
+            loadingText.textContent = 'Caricamento nonno Andrea...';
+            
+            loader.load(
+                characterPath,
+                function(gltf) {
+                    character3D = gltf.scene;
+                    scene.add(character3D);
+                    
+                    // Setup animazioni
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixer = new THREE.AnimationMixer(character3D);
+                        
+                        // Trova animazione idle
+                        const idleAnim = gltf.animations.find(anim => 
+                            anim.name.toLowerCase().includes('idle') ||
+                            anim.name.toLowerCase().includes('breathing')
+                        ) || gltf.animations[0];
+                        
+                        if (idleAnim) {
+                            const action = mixer.clipAction(idleAnim);
+                            action.play();
+                        }
+                    }
+                    
+                    // Posiziona personaggio
+                    character3D.position.set(0, -1, 0);
+                    character3D.scale.set(1, 1, 1);
+                    
+                    // Trova bones per lip sync
+                    character3D.traverse(function(child) {
+                        if (child.isBone) {
+                            if (child.name.toLowerCase().includes('jaw') ||
+                                child.name.toLowerCase().includes('mouth')) {
+                                mouthBones.push(child);
+                            }
+                        }
+                        
+                        // Trova mesh con morph targets
+                        if (child.isMesh && child.morphTargetInfluences) {
+                            character3D.faceMesh = child;
+                        }
+                    });
+                    
+                    camera.position.set(0, 0, 2);
+                    camera.lookAt(0, 0, 0);
+                    
+                    isCharacterLoaded = true;
+                    loadingText.classList.add('hidden');
+                    
+                    console.log('Personaggio 3D caricato con successo!');
+                },
+                function(progress) {
+                    const percent = Math.round((progress.loaded / progress.total) * 100);
+                    loadingText.textContent = `Caricamento... ${percent}%`;
+                },
+                function(error) {
+                    console.error('Errore caricamento personaggio:', error);
+                    loadingText.textContent = '❌ Errore caricamento. Controlla che character.glb sia nella stessa cartella!';
+                    loadingText.style.color = '#ff4444';
+                }
+            );
+            
+            // Loop di rendering
+            animate3D();
+        }
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            
+            if (mixer && isCharacterLoaded) {
+                mixer.update(clock.getDelta());
+            }
+            
+            // Rotazione leggera del personaggio
+            if (character3D && isCharacterLoaded) {
+                character3D.rotation.y = Math.sin(clock.getElapsedTime() * 0.3) * 0.1;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        // Risposte di nonno Andrea (più ricche e coinvolgenti)
         const responses = {
-            'azienda': "🌾 Sai, la mia famiglia coltiva questa terra da tre generazioni! Io ho iniziato quando avevo 15 anni, aiutando mio papà. Ora ho 70 anni e ancora mi alzo all'alba per prendermi cura delle mie olive e delle mie pecorelle.",
+            'azienda': "🌾 Sai, la mia famiglia coltiva questa terra da tre generazioni! Io ho iniziato quando avevo 15 anni, aiutando mio papà con le olive. Ora ho 70 anni e ancora mi alzo all'alba per prendermi cura delle mie olive e delle mie pecorelle. Questa terra è la mia vita!",
             
-            'olio': "🫒 Ah, il mio olio! Le olive le raccolgo ancora a mano, una per una, come faceva mio nonno. Le porto al frantoio entro 4 ore dalla raccolta. Il sapore? È come mordere un'oliva fresca! Piccante quanto basta per farti capire che è vero.",
+            'olio': "🫒 Ah, il mio olio extravergine! Senti, le olive le raccolgo ancora a mano, una per una, come faceva mio nonno 100 anni fa. Le porto al frantoio entro 4 ore dalla raccolta. Il sapore? È come mordere un'oliva fresca appena colta! Piccante quanto basta per farti capire che è vero olio di qualità.",
             
-            'pecore': "🐑 Le mie pecore sono la mia gioia! Le conosco tutte per nome. Pascolano libere sui colli e il loro latte diventa il formaggio più buono che tu abbia mai assaggiato. Sono come le mie nipotine!",
+            'pecore': "🐑 Le mie pecore sono la mia gioia! Le conosco tutte per nome: c'è Bianchina, Stella, Nocciola... Pascolano libere sui colli e il loro latte diventa il formaggio più buono che tu abbia mai assaggiato. Sono come le mie nipotine, eh!",
             
-            'terra': "🌍 Questa terra è la mia vita. Non uso mai pesticidi, solo tanto amore e pazienza. La terra ti dà quello che le dai tu. Se la rispetti, lei ti rispetta. I miei prodotti sanno di una volta perché li faccio come una volta.",
+            'terra': "🌍 Questa terra è sacra per me. Non uso mai pesticidi o prodotti chimici, solo tanto amore, pazienza e il concime delle mie pecore. La terra ti dà quello che le dai tu. Se la rispetti, lei ti rispetta. I miei prodotti sanno di una volta perché li faccio esattamente come una volta.",
             
-            'famiglia': "👨‍👩‍👧‍👦 La mia famiglia... mia moglie Maria mi aiuta ancora a 65 anni! I miei figli ora lavorano in città, ma nei weekend vengono ad aiutarmi. Spero che i nipotini continueranno questa tradizione.",
+            'famiglia': "👨‍👩‍👧‍👦 La mia famiglia... mia moglie Maria mi aiuta ancora a 65 anni! È lei che fa il formaggio più buono della zona. I miei figli ora lavorano in città, ma nei weekend vengono sempre ad aiutarmi con la raccolta. Spero tanto che i nipotini continueranno questa tradizione!",
             
-            'passione': "❤️ Sai cosa mi dà più gioia? Quando qualcuno assaggia i miei prodotti e vedo i suoi occhi che si illuminano. Quello è il momento in cui capisci che tutto il lavoro ne è valso la pena.",
+            'passione': "❤️ Sai cosa mi dà più gioia? Quando qualcuno assaggia i miei prodotti e vedo i suoi occhi che si illuminano. Quello è il momento magico in cui capisci che tutto il sudore, tutta la fatica, ne è valsa davvero la pena. È pura emozione!",
             
-            'ricette': "👵 Mia nonna mi diceva sempre: 'Andrea, l'olio buono si riconosce sul pane tostato'. E aveva ragione! Oppure il cacio fresco con un filo di miele... Madonna che bontà!",
+            'ricette': "👵 Mia nonna mi diceva sempre: 'Andrea, l'olio buono si riconosce sul pane tostato caldo'. E aveva proprio ragione! Oppure il cacio fresco con un filo del mio miele... Madonna mia che bontà! Ti viene l'acquolina solo a pensarci!",
             
-            'stagioni': "🌤️ Ogni stagione ha la sua magia qui. In primavera tutto fiorisce, d'estate raccolgo il grano, in autunno le olive, d'inverno riposo ma programmo l'anno nuovo. La natura è la mia sveglia.",
+            'stagioni': "🌤️ Ogni stagione qui ha la sua magia speciale. In primavera tutto fiorisce ed è un tripudio di colori, d'estate raccolgo il grano dorato, in autunno le olive mature, d'inverno riposo ma programmo l'anno nuovo. La natura è la mia sveglia e il mio calendario!",
             
-            'difficolta': "😅 Non è sempre facile, eh! Quando viene la grandine o la siccità, piangi. Ma poi vedi un germoglio nuovo che spunta e ricominci. L'agricoltore è come il sole: cade la sera ma sa che domani sorgerà.",
+            'difficolta': "😅 Non è sempre stato facile, eh! Quando viene la grandine improvvisa o la siccità dura mesi, piangi come un bambino. Ma poi vedi un piccolo germoglio nuovo che spunta dalla terra e ricominci con speranza. L'agricoltore è come il sole: cade la sera ma sa che domani sorgerà di nuovo!",
             
-            'sogni': "✨ Il mio sogno? Che i giovani tornino in campagna. Che capiscano che qui c'è il futuro, non solo nelle città. La terra ha bisogno di mani giovani e cuori appassionati."
+            'sogni': "✨ Il mio sogno più grande? Che i giovani di oggi riscoprano la bellezza della campagna. Che capiscano che qui c'è il vero futuro, non solo nelle città piene di smog. La terra ha bisogno di mani giovani e cuori appassionati come il mio!"
         };
 
         // Inizializza il riconoscimento vocale
@@ -626,7 +621,7 @@
                 recognition.onstart = function() {
                     isListening = true;
                     updateListeningUI(true);
-                    updateVoiceStatus("🎤 Dimmi tutto, ti ascolto...");
+                    updateVoiceStatus("🎤 Dimmi tutto, ti ascolto con attenzione...");
                 };
                 
                 recognition.onresult = function(event) {
@@ -636,7 +631,7 @@
                 };
                 
                 recognition.onerror = function(event) {
-                    updateVoiceStatus("😅 Non ho sentito bene, riprova o scrivi!");
+                    updateVoiceStatus("😅 Non ho sentito bene, riprova o scrivimi!");
                     updateListeningUI(false);
                 };
                 
@@ -695,24 +690,74 @@
         }
 
         function makeCharacterTalk(duration = 3000) {
-            if (isTalking) return;
+            if (isTalking || !isCharacterLoaded) return;
             
             isTalking = true;
-            const mouth = document.getElementById('mouth');
-            const character = document.getElementById('character');
             
-            mouth.classList.add('talking');
-            
-            // Gesti mentre parla
-            const gestures = ['gesture-excited', 'gesture-thinking'];
-            const randomGesture = gestures[Math.floor(Math.random() * gestures.length)];
-            character.parentElement.classList.add(randomGesture);
-            
-            setTimeout(() => {
-                mouth.classList.remove('talking');
-                character.parentElement.classList.remove(randomGesture);
-                isTalking = false;
-            }, duration);
+            // Animazione lip sync per personaggio 3D
+            if (character3D) {
+                // Metodo 1: Morph targets (se disponibili)
+                if (character3D.faceMesh && character3D.faceMesh.morphTargetInfluences) {
+                    const morphs = character3D.faceMesh.morphTargetInfluences;
+                    
+                    const talkInterval = setInterval(() => {
+                        // Simula movimento bocca
+                        for (let i = 0; i < morphs.length; i++) {
+                            if (i < 3) { // Prime 3 morph targets per bocca
+                                morphs[i] = Math.random() * 0.8;
+                            }
+                        }
+                    }, 150);
+                    
+                    setTimeout(() => {
+                        clearInterval(talkInterval);
+                        // Reset morph targets
+                        for (let i = 0; i < morphs.length; i++) {
+                            morphs[i] = 0;
+                        }
+                        isTalking = false;
+                    }, duration);
+                }
+                
+                // Metodo 2: Movimento bones mascella
+                else if (mouthBones.length > 0) {
+                    const originalRotations = mouthBones.map(bone => bone.rotation.x);
+                    
+                    const talkInterval = setInterval(() => {
+                        mouthBones.forEach((bone, index) => {
+                            bone.rotation.x = originalRotations[index] + Math.sin(Date.now() * 0.01) * 0.3;
+                        });
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        clearInterval(talkInterval);
+                        // Reset rotazioni
+                        mouthBones.forEach((bone, index) => {
+                            bone.rotation.x = originalRotations[index];
+                        });
+                        isTalking = false;
+                    }, duration);
+                }
+                
+                // Metodo 3: Movimento testa come fallback
+                else {
+                    const originalY = character3D.rotation.y;
+                    const talkInterval = setInterval(() => {
+                        character3D.rotation.y = originalY + Math.sin(Date.now() * 0.02) * 0.1;
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        clearInterval(talkInterval);
+                        character3D.rotation.y = originalY;
+                        isTalking = false;
+                    }, duration);
+                }
+            } else {
+                // Fallback se personaggio non caricato
+                setTimeout(() => {
+                    isTalking = false;
+                }, duration);
+            }
         }
 
         function speakText(text) {
@@ -726,8 +771,8 @@
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.voice = currentVoice;
             utterance.volume = document.getElementById('volumeSlider').value / 100;
-            utterance.rate = 0.8; // Più lento, come un nonno
-            utterance.pitch = 0.9; // Più grave, voce da anziano
+            utterance.rate = 0.75; // Più lento e riflessivo
+            utterance.pitch = 0.85; // Più grave, come un anziano saggio
             
             utterance.onstart = function() {
                 updateVoiceStatus("🗣️ Nonno Andrea ti sta raccontando...");
@@ -743,7 +788,7 @@
         function showTypingIndicator() {
             const indicator = document.getElementById('typingIndicator');
             indicator.style.display = 'block';
-            makeCharacterTalk(1500);
+            makeCharacterTalk(2000);
         }
 
         function hideTypingIndicator() {
@@ -760,12 +805,12 @@
                 messages.appendChild(messageDiv);
             } else {
                 messages.appendChild(messageDiv);
-                typeWriter(messageDiv, text, 40);
-                makeCharacterTalk(text.length * 60);
+                typeWriter(messageDiv, text, 35);
+                makeCharacterTalk(text.length * 70);
                 
                 setTimeout(() => {
                     speakText(text);
-                }, 800);
+                }, 1000);
             }
             
             messages.scrollTop = messages.scrollHeight;
@@ -800,55 +845,61 @@
                 hideTypingIndicator();
                 const response = generateResponse(userText);
                 addMessage(response);
-            }, 1500 + Math.random() * 1000);
+            }, 1800 + Math.random() * 1200);
         }
 
         function generateResponse(userText) {
             const text = userText.toLowerCase();
             
             // Saluti
-            if (text.includes('ciao') || text.includes('buongiorno') || text.includes('salve')) {
-                return "👋 Ciao caro! Che piacere sentire una voce giovane! Raccontami, cosa ti piacerebbe sapere di me e della mia azienda?";
+            if (text.includes('ciao') || text.includes('buongiorno') || text.includes('salve') || text.includes('buonasera')) {
+                return "👋 Ciao caro! Che piacere sentire una voce giovane e curiosa! Dimmi tutto, cosa ti piacerebbe sapere della mia vita in campagna?";
             }
             
-            if (text.includes('sì') || text.includes('si') || text.includes('volentieri') || text.includes('dimmi')) {
+            if (text.includes('sì') || text.includes('si') || text.includes('volentieri') || text.includes('dimmi') || text.includes('racconta')) {
                 return responses.azienda;
             }
             
-            // Temi specifici
-            if (text.includes('olio') || text.includes('olive')) return responses.olio;
-            if (text.includes('pecore') || text.includes('formaggio') || text.includes('pecorino')) return responses.pecore;
-            if (text.includes('terra') || text.includes('biologico') || text.includes('naturale')) return responses.terra;
-            if (text.includes('famiglia') || text.includes('moglie') || text.includes('figli')) return responses.famiglia;
-            if (text.includes('passione') || text.includes('amore') || text.includes('piace')) return responses.passione;
-            if (text.includes('ricette') || text.includes('cucinare') || text.includes('mangiare')) return responses.ricette;
-            if (text.includes('stagioni') || text.includes('tempo') || text.includes('clima')) return responses.stagioni;
-            if (text.includes('difficoltà') || text.includes('problemi') || text.includes('fatica')) return responses.difficolta;
-            if (text.includes('sogni') || text.includes('futuro') || text.includes('speranza')) return responses.sogni;
-            if (text.includes('azienda') || text.includes('storia') || text.includes('iniziato')) return responses.azienda;
+            // Temi specifici con più variazioni
+            if (text.includes('olio') || text.includes('olive') || text.includes('frantoio')) return responses.olio;
+            if (text.includes('pecore') || text.includes('formaggio') || text.includes('pecorino') || text.includes('latte')) return responses.pecore;
+            if (text.includes('terra') || text.includes('biologico') || text.includes('naturale') || text.includes('pesticidi')) return responses.terra;
+            if (text.includes('famiglia') || text.includes('moglie') || text.includes('figli') || text.includes('maria')) return responses.famiglia;
+            if (text.includes('passione') || text.includes('amore') || text.includes('piace') || text.includes('gioia')) return responses.passione;
+            if (text.includes('ricette') || text.includes('cucinare') || text.includes('mangiare') || text.includes('nonna')) return responses.ricette;
+            if (text.includes('stagioni') || text.includes('tempo') || text.includes('clima') || text.includes('primavera')) return responses.stagioni;
+            if (text.includes('difficoltà') || text.includes('problemi') || text.includes('fatica') || text.includes('duro')) return responses.difficolta;
+            if (text.includes('sogni') || text.includes('futuro') || text.includes('speranza') || text.includes('giovani')) return responses.sogni;
+            if (text.includes('azienda') || text.includes('storia') || text.includes('iniziato') || text.includes('generazioni')) return responses.azienda;
             
+            // Risposte più personali
             if (text.includes('età') || text.includes('anni') || text.includes('vecchio')) {
-                return "😊 Ho 70 anni, ma mi sento come se ne avessi 40! Il lavoro nei campi mantiene giovani, sai. E poi, finché le mani reggono e il cuore batte forte, io continuo!";
+                return "😊 Ho 70 anni compiuti, ma mi sento come se ne avessi 40! Il lavoro nei campi mantiene giovani il corpo e l'anima, sai. E poi, finché queste vecchie mani reggono e il cuore batte forte, io continuo con passione!";
             }
             
-            if (text.includes('grazie')) {
-                return "🥰 Ma grazie a te, caro! È bello vedere che ci sono ancora persone interessate alla vera tradizione. Mi scalda il cuore!";
+            if (text.includes('grazie') || text.includes('bello') || text.includes('interessante')) {
+                return "🥰 Ma grazie a te, caro figliolo! È bello vedere che ci sono ancora persone giovani interessate alla vera tradizione contadina. Mi scalda proprio il cuore parlare con te!";
             }
             
-            if (text.includes('dove') || text.includes('posizione')) {
-                return "📍 La mia azienda è qui in Umbria, sui colli tra Perugia e Assisi. Un posto benedetto dal Signore, con una vista che toglie il fiato. Se passi di qua, fermati!";
+            if (text.includes('dove') || text.includes('posizione') || text.includes('umbria')) {
+                return "📍 La mia azienda è qui in Umbria, sui dolci colli tra Perugia e Assisi. Un posto benedetto dal Signore, con una vista mozzafiato che non ti stancheresti mai di guardare. Se un giorno passi di qua, fermati a trovarmi!";
             }
             
-            if (text.includes('consigli') || text.includes('giovani')) {
-                return "💡 Il mio consiglio ai giovani? Abbiate pazienza. La natura ha i suoi tempi, non quelli del computer. E ricordate: le mani sporche di terra sono le più pulite del mondo!";
+            if (text.includes('consigli') || text.includes('saggezza') || text.includes('imparare')) {
+                return "💡 Il mio consiglio più prezioso? Abbiate pazienza e rispetto per i tempi della natura. La terra non ha fretta come noi uomini moderni. E ricordate sempre: le mani sporche di terra sono le più pulite e oneste del mondo!";
             }
             
-            // Risposta di default
+            if (text.includes('prodotti') || text.includes('vendere') || text.includes('comprare')) {
+                return "🛒 I miei prodotti li trovi proprio qui nel distributore! Olio extravergine, pecorino stagionato e miele di acacia. Tutto fatto con le mie mani e tanto amore. Provare per credere, come si dice!";
+            }
+            
+            // Risposte di default più calorose
             const defaultResponses = [
-                "🤔 Interessante quello che dici... dimmi di più! Cosa ti incuriosisce della vita di campagna?",
-                "😊 Ah sì? E tu cosa fai nella vita? Ti piacerebbe sapere come si viveva una volta?",
-                "🌾 Bello parlare con te! Hai mai assaggiato prodotti fatti come si deve? Quelli che sanno di una volta?",
-                "👴 Raccontami un po' di te! Io sono sempre curioso di sentire le storie delle persone..."
+                "🤔 Interessante quello che mi dici... dimmi di più! Mi piace sentire cosa pensa la gente giovane come te.",
+                "😊 Ah sì? E tu cosa fai nella vita? Ti piacerebbe conoscere i segreti della vita di campagna?",
+                "🌾 Che bello parlare con te! Hai mai assaggiato prodotti genuini fatti con le mani? Quelli che sanno ancora di una volta?",
+                "👴 Raccontami un po' di te, caro! Io sono sempre curioso di sentire le storie delle persone che incontro...",
+                "🌱 Sai, mi fa piacere che tu sia interessato. Oggi i giovani sono sempre di fretta, ma tu sembri diverso!"
             ];
             
             return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
@@ -863,6 +914,7 @@
         // Inizializzazione
         document.addEventListener('DOMContentLoaded', function() {
             initSpeechRecognition();
+            init3DCharacter(); // Carica personaggio 3D
             
             if (speechSynthesis.onvoiceschanged !== undefined) {
                 speechSynthesis.onvoiceschanged = initVoices;
@@ -873,13 +925,16 @@
 
         if (document.readyState !== 'loading') {
             initSpeechRecognition();
+            init3DCharacter(); // Carica personaggio 3D
             initVoices();
         }
 
-        // Animazione iniziale
+        // Animazione iniziale del personaggio (quando è caricato)
         setTimeout(() => {
-            makeCharacterTalk(4000);
-        }, 1500);
+            if (isCharacterLoaded) {
+                makeCharacterTalk(4000);
+            }
+        }, 3000);
     </script>
 </body>
 </html>
