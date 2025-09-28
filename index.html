@@ -477,32 +477,38 @@
             
             // Setup scene
             scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x87ceeb); // Azzurro cielo
+            
             camera = new THREE.PerspectiveCamera(75, 250/320, 0.1, 1000);
             renderer = new THREE.WebGLRenderer({ 
                 alpha: true, 
                 antialias: true 
             });
             renderer.setSize(250, 320);
-            renderer.setClearColor(0x000000, 0);
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
             
             clock = new THREE.Clock();
 
-            // Luci
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            // Luci migliorate
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Luce ambiente più forte
             scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 1);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            directionalLight.position.set(2, 3, 1);
             directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
             scene.add(directionalLight);
+            
+            // Luce di riempimento
+            const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+            fillLight.position.set(-1, 1, -1);
+            scene.add(fillLight);
 
             // Carica il personaggio
             const loader = new THREE.GLTFLoader();
-            
-            // QUESTO È IL TUO FILE! 
             const characterPath = './character.glb';
             
             loadingText.textContent = 'Caricamento nonno Andrea...';
@@ -511,6 +517,31 @@
                 characterPath,
                 function(gltf) {
                     character3D = gltf.scene;
+                    
+                    // Calcola dimensioni automaticamente
+                    const box = new THREE.Box3().setFromObject(character3D);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    
+                    console.log('Dimensioni originali:', size);
+                    console.log('Centro:', center);
+                    
+                    // Scala automatica per adattare al container
+                    const maxDimension = Math.max(size.x, size.y, size.z);
+                    const targetSize = 1.5; // Dimensione target
+                    const scale = targetSize / maxDimension;
+                    
+                    character3D.scale.setScalar(scale);
+                    console.log('Scala applicata:', scale);
+                    
+                    // Centra il personaggio
+                    character3D.position.x = -center.x * scale;
+                    character3D.position.y = -center.y * scale;
+                    character3D.position.z = -center.z * scale;
+                    
+                    // Posiziona per essere ben visibile (testa in alto)
+                    character3D.position.y += size.y * scale * 0.1; // Alza leggermente
+                    
                     scene.add(character3D);
                     
                     // Setup animazioni
@@ -520,50 +551,80 @@
                         // Trova animazione idle
                         const idleAnim = gltf.animations.find(anim => 
                             anim.name.toLowerCase().includes('idle') ||
-                            anim.name.toLowerCase().includes('breathing')
+                            anim.name.toLowerCase().includes('breathing') ||
+                            anim.name.toLowerCase().includes('stand')
                         ) || gltf.animations[0];
                         
                         if (idleAnim) {
                             const action = mixer.clipAction(idleAnim);
                             action.play();
+                            console.log('Animazione caricata:', idleAnim.name);
                         }
                     }
-                    
-                    // Posiziona personaggio
-                    character3D.position.set(0, -1, 0);
-                    character3D.scale.set(1, 1, 1);
                     
                     // Trova bones per lip sync
                     character3D.traverse(function(child) {
                         if (child.isBone) {
                             if (child.name.toLowerCase().includes('jaw') ||
-                                child.name.toLowerCase().includes('mouth')) {
+                                child.name.toLowerCase().includes('mouth') ||
+                                child.name.toLowerCase().includes('chin')) {
                                 mouthBones.push(child);
+                                console.log('Bone trovato per lip sync:', child.name);
                             }
                         }
                         
                         // Trova mesh con morph targets
                         if (child.isMesh && child.morphTargetInfluences) {
                             character3D.faceMesh = child;
+                            console.log('Morph targets trovati:', child.morphTargetInfluences.length);
+                        }
+                        
+                        // Migliora materiali
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                            if (child.material) {
+                                child.material.needsUpdate = true;
+                            }
                         }
                     });
                     
-                    camera.position.set(0, 0, 2);
-                    camera.lookAt(0, 0, 0);
+                    // Posiziona camera per inquadrare bene il personaggio
+                    const distance = Math.max(size.x, size.y, size.z) * scale * 1.2;
+                    camera.position.set(0, size.y * scale * 0.3, distance);
+                    camera.lookAt(character3D.position);
                     
                     isCharacterLoaded = true;
                     loadingText.classList.add('hidden');
                     
-                    console.log('Personaggio 3D caricato con successo!');
+                    console.log('✅ Personaggio 3D caricato con successo!');
+                    console.log('Posizione finale:', character3D.position);
+                    console.log('Scala finale:', character3D.scale);
                 },
                 function(progress) {
                     const percent = Math.round((progress.loaded / progress.total) * 100);
                     loadingText.textContent = `Caricamento... ${percent}%`;
                 },
                 function(error) {
-                    console.error('Errore caricamento personaggio:', error);
+                    console.error('❌ Errore caricamento personaggio:', error);
                     loadingText.textContent = '❌ Errore caricamento. Controlla che character.glb sia nella stessa cartella!';
                     loadingText.style.color = '#ff4444';
+                    
+                    // Fallback - carica un cubo di test
+                    const geometry = new THREE.BoxGeometry(0.5, 1, 0.3);
+                    const material = new THREE.MeshPhongMaterial({ color: 0x8B4513 });
+                    const testCube = new THREE.Mesh(geometry, material);
+                    testCube.position.y = 0;
+                    scene.add(testCube);
+                    
+                    camera.position.set(0, 0, 2);
+                    camera.lookAt(0, 0, 0);
+                    
+                    setTimeout(() => {
+                        loadingText.textContent = '🤖 Modalità test - personaggio generico';
+                        loadingText.style.color = '#ffa500';
+                        loadingText.classList.remove('hidden');
+                    }, 1000);
                 }
             );
             
@@ -584,6 +645,46 @@
             }
             
             renderer.render(scene, camera);
+        }
+
+        // Controlli debug (opzionali - per testare)
+        function addDebugControls() {
+            // Aggiungi controlli mouse per ruotare la vista (opzionale)
+            let mouseDown = false;
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            const container = document.getElementById('character3d');
+            
+            container.addEventListener('mousedown', (e) => {
+                mouseDown = true;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            container.addEventListener('mouseup', () => {
+                mouseDown = false;
+            });
+            
+            container.addEventListener('mousemove', (e) => {
+                if (!mouseDown || !character3D) return;
+                
+                const deltaX = e.clientX - mouseX;
+                const deltaY = e.clientY - mouseY;
+                
+                character3D.rotation.y += deltaX * 0.01;
+                character3D.rotation.x += deltaY * 0.01;
+                
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // Zoom con rotella mouse
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                camera.position.z += e.deltaY * 0.001;
+                camera.position.z = Math.max(0.5, Math.min(camera.position.z, 10));
+            });
         }
 
         // Risposte di nonno Andrea (più ricche e coinvolgenti)
@@ -915,6 +1016,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initSpeechRecognition();
             init3DCharacter(); // Carica personaggio 3D
+            // addDebugControls(); // Decommentare per controlli mouse
             
             if (speechSynthesis.onvoiceschanged !== undefined) {
                 speechSynthesis.onvoiceschanged = initVoices;
@@ -926,6 +1028,7 @@
         if (document.readyState !== 'loading') {
             initSpeechRecognition();
             init3DCharacter(); // Carica personaggio 3D
+            // addDebugControls(); // Decommentare per controlli mouse
             initVoices();
         }
 
