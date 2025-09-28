@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nonno Andrea - Assistente Virtuale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d, #4a7c59);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .character-section {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            position: relative;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ologram-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, transparent 49%, rgba(0,255,255,0.1) 50%, transparent 51%),
+                linear-gradient(0deg, transparent 49%, rgba(0,255,255,0.05) 50%, transparent 51%);
+            background-size: 3px 3px;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .character {
+            width: 180px;
+            height: 280px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
+        }
+        
+        .character-body {
+            position: relative;
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        /* Cappello del nonno */
+        .hat {
+            width: 90px;
+            height: 35px;
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border-radius: 45px 45px 15px 15px;
+            margin: 0 auto 5px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .hat::after {
+            content: '🌾';
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            font-size: 16px;
+        }
+        
+        .head {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(145deg, #FDBCB4, #F4A087);
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Barba del nonno */
+        .beard {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 25px;
+            background: linear-gradient(145deg, #E0E0E0, #CCCCCC);
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .eyes {
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 18px;
+        }
+        
+        .eye {
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            position: relative;
+            animation: blink 5s infinite;
+        }
+        
+        .eye::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #2C5F2D;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            animation: look 8s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 92%, 100% { transform: scaleY(1); }
+            96% { transform: scaleY(0.1); }
+        }
+        
+        @keyframes look {
+            0%, 40% { transform: translateX(0); }
+            45%, 75% { transform: translateX(2px); }
+            80%, 100% { transform: translateX(-1px); }
+        }
+        
+        .nose {
+            position: absolute;
+            top: 42px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #F4A087;
+            border-radius: 50%;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .mouth {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 12px;
+            border-bottom: 3px solid #8B4513;
+            border-radius: 0 0 25px 25px;
+            transition: all 0.3s;
+        }
+        
+        .mouth.talking {
+            animation: talk 0.4s infinite alternate;
+        }
+        
+        @keyframes talk {
+            0% { 
+                height: 8px;
+                border-radius: 0 0 15px 15px;
+            }
+            100% { 
+                height: 18px;
+                border-radius: 0 0 30px 30px;
+            }
+        }
+        
+        .body {
+            width: 70px;
+            height: 110px;
+            background: linear-gradient(145deg, #228B22, #32CD32);
+            border-radius: 35px;
+            margin: 15px auto;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Bretelle del nonno */
+        .suspenders {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 80px;
+        }
+        
+        .suspender {
+            width: 4px;
+            height: 80px;
+            background: #8B4513;
+            position: absolute;
+            border-radius: 2px;
+        }
+        
+        .suspender.left { left: 8px; }
+        .suspender.right { right: 8px; }
+        
+        .arms {
+            position: absolute;
+            top: 25px;
+            width: 100%;
+        }
+        
+        .arm {
+            width: 35px;
+            height: 10px;
+            background: linear-gradient(145deg, #FDBCB4, #F4A087);
+            border-radius: 5px;
+            position: absolute;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        
+        .arm.left {
+            left: -18px;
+            transform-origin: right center;
+            animation: wave-left 4s ease-in-out infinite;
+        }
+        
+        .arm.right {
+            right: -18px;
+            transform-origin: left center;
+            animation: wave-right 4s ease-in-out infinite;
+        }
+        
+        @keyframes wave-left {
+            0%, 60%, 100% { transform: rotate(-15deg); }
+            30% { transform: rotate(-35deg); }
+        }
+        
+        @keyframes wave-right {
+            0%, 60%, 100% { transform: rotate(15deg); }
+            80% { transform: rotate(35deg); }
+        }
+        
+        .character-name {
+            color: #FFD700;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px 0 5px;
+            text-shadow: 0 0 15px rgba(255,215,0,0.6);
+            animation: glow 3s ease-in-out infinite alternate;
+            z-index: 2;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 15px rgba(255,215,0,0.6); }
+            to { text-shadow: 0 0 25px rgba(255,215,0,0.9); }
+        }
+        
+        .subtitle {
+            color: #20c997;
+            font-size: 16px;
+            text-align: center;
+            z-index: 2;
+        }
+        
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            max-height: 150px;
+        }
+        
+        .message {
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 18px;
+            max-width: 85%;
+            animation: slideIn 0.4s ease;
+            line-height: 1.4;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            margin-right: auto;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .user-message {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 8px;
+        }
+        
+        .typing-indicator {
+            display: none;
+            background: #f8f9fa;
+            color: #6c757d;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-right: auto;
+            max-width: 85%;
+            border: 1px solid #e9ecef;
+        }
+        
+        .typing-dots span {
+            animation: typing 1.4s infinite;
+            animation-fill-mode: both;
+        }
+        
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+        
+        .voice-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        
+        .mic-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220,53,69,0.4);
+        }
+        
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(220,53,69,0.6);
+        }
+        
+        .mic-button.listening {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            animation: pulse-mic 1.2s infinite;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.4);
+        }
+        
+        @keyframes pulse-mic {
+            0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(40, 167, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+        
+        .listening-indicator {
+            display: none;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            animation: pulse 1s infinite;
+            box-shadow: 0 2px 10px rgba(40,167,69,0.3);
+        }
+        
+        .listening-indicator.active {
+            display: block;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .volume-slider {
+            width: 80px;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .input-area input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #28a745;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .input-area input:focus {
+            border-color: #20c997;
+            box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+        }
+        
+        .input-area button {
+            padding: 14px 25px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+        }
+        
+        .input-area button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+        }
+        
+        .voice-status {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        
+        .gesture-excited .character {
+            animation: excited 1.5s ease-in-out;
+        }
+        
+        @keyframes excited {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-12px) scale(1.05); }
+            50% { transform: translateY(-6px) scale(1.02); }
+            75% { transform: translateY(-9px) scale(1.03); }
+        }
+        
+        .gesture-thinking .head {
+            animation: think 2s ease-in-out;
+        }
+        
+        @keyframes think {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-3deg); }
+            75% { transform: rotate(3deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                height: 90vh;
+                max-width: 100%;
+                border-radius: 15px;
+            }
+            
+            .character-section {
+                height: 350px;
+            }
+            
+            .character {
+                width: 150px;
+                height: 230px;
+            }
+            
+            .character-name {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="character-section">
+            <div class="ologram-effect"></div>
+            
+            <div class="character" id="character">
+                <div class="character-body">
+                    <div class="hat"></div>
+                    <div class="head">
+                        <div class="eyes">
+                            <div class="eye"></div>
+                            <div class="eye"></div>
+                        </div>
+                        <div class="nose"></div>
+                        <div class="mouth" id="mouth"></div>
+                        <div class="beard"></div>
+                    </div>
+                    <div class="body">
+                        <div class="suspenders">
+                            <div class="suspender left"></div>
+                            <div class="suspender right"></div>
+                        </div>
+                        <div class="arms">
+                            <div class="arm left"></div>
+                            <div class="arm right"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="character-name">Nonno Andrea</div>
+            <div class="subtitle">🌾 Agricoltore da 50 anni</div>
+        </div>
+        
+        <div class="chat-section">
+            <div class="messages" id="messages">
+                <div class="message bot-message">
+                    👋 Ciao! Sono nonno Andrea, ti va di sentire della mia azienda?
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                Nonno Andrea sta pensando<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
+            </div>
+            
+            <div class="voice-status" id="voiceStatus">
+                🎤 Parla con nonno Andrea cliccando il microfono
+            </div>
+            
+            <div class="voice-controls">
+                <button class="mic-button" id="micButton" onclick="toggleListening()" title="Clicca per parlare">🎤</button>
+                <div class="listening-indicator" id="listeningIndicator">🎤 Ti sto ascoltando...</div>
+                <div class="volume-control">
+                    🔊 <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="85" onchange="updateVolume()">
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Scrivi a nonno Andrea..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">💬</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isTalking = false;
+        let isListening = false;
+        let recognition = null;
+        let speechSynthesis = window.speechSynthesis;
+        let currentVoice = null;
+
+        // Risposte di nonno Andrea
+        const responses = {
+            'azienda': "🌾 Sai, la mia famiglia coltiva questa terra da tre generazioni! Io ho iniziato quando avevo 15 anni, aiutando mio papà. Ora ho 70 anni e ancora mi alzo all'alba per prendermi cura delle mie olive e delle mie pecorelle.",
+            
+            'olio': "🫒 Ah, il mio olio! Le olive le raccolgo ancora a mano, una per una, come faceva mio nonno. Le porto al frantoio entro 4 ore dalla raccolta. Il sapore? È come mordere un'oliva fresca! Piccante quanto basta per farti capire che è vero.",
+            
+            'pecore': "🐑 Le mie pecore sono la mia gioia! Le conosco tutte per nome. Pascolano libere sui colli e il loro latte diventa il formaggio più buono che tu abbia mai assaggiato. Sono come le mie nipotine!",
+            
+            'terra': "🌍 Questa terra è la mia vita. Non uso mai pesticidi, solo tanto amore e pazienza. La terra ti dà quello che le dai tu. Se la rispetti, lei ti rispetta. I miei prodotti sanno di una volta perché li faccio come una volta.",
+            
+            'famiglia': "👨‍👩‍👧‍👦 La mia famiglia... mia moglie Maria mi aiuta ancora a 65 anni! I miei figli ora lavorano in città, ma nei weekend vengono ad aiutarmi. Spero che i nipotini continueranno questa tradizione.",
+            
+            'passione': "❤️ Sai cosa mi dà più gioia? Quando qualcuno assaggia i miei prodotti e vedo i suoi occhi che si illuminano. Quello è il momento in cui capisci che tutto il lavoro ne è valso la pena.",
+            
+            'ricette': "👵 Mia nonna mi diceva sempre: 'Andrea, l'olio buono si riconosce sul pane tostato'. E aveva ragione! Oppure il cacio fresco con un filo di miele... Madonna che bontà!",
+            
+            'stagioni': "🌤️ Ogni stagione ha la sua magia qui. In primavera tutto fiorisce, d'estate raccolgo il grano, in autunno le olive, d'inverno riposo ma programmo l'anno nuovo. La natura è la mia sveglia.",
+            
+            'difficolta': "😅 Non è sempre facile, eh! Quando viene la grandine o la siccità, piangi. Ma poi vedi un germoglio nuovo che spunta e ricominci. L'agricoltore è come il sole: cade la sera ma sa che domani sorgerà.",
+            
+            'sogni': "✨ Il mio sogno? Che i giovani tornino in campagna. Che capiscano che qui c'è il futuro, non solo nelle città. La terra ha bisogno di mani giovani e cuori appassionati."
+        };
+
+        // Inizializza il riconoscimento vocale
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'it-IT';
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    updateListeningUI(true);
+                    updateVoiceStatus("🎤 Dimmi tutto, ti ascolto...");
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('userInput').value = transcript;
+                    sendMessage();
+                };
+                
+                recognition.onerror = function(event) {
+                    updateVoiceStatus("😅 Non ho sentito bene, riprova o scrivi!");
+                    updateListeningUI(false);
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    updateListeningUI(false);
+                    updateVoiceStatus("🎤 Parla con nonno Andrea cliccando il microfono");
+                };
+            } else {
+                updateVoiceStatus("⚠️ Il microfono non funziona su questo browser");
+            }
+        }
+
+        // Inizializza le voci
+        function initVoices() {
+            const voices = speechSynthesis.getVoices();
+            currentVoice = voices.find(voice => voice.lang === 'it-IT') || 
+                          voices.find(voice => voice.lang.startsWith('it')) || 
+                          voices[0];
+        }
+
+        function updateListeningUI(listening) {
+            const micButton = document.getElementById('micButton');
+            const indicator = document.getElementById('listeningIndicator');
+            
+            if (listening) {
+                micButton.classList.add('listening');
+                micButton.innerHTML = '🔴';
+                indicator.classList.add('active');
+            } else {
+                micButton.classList.remove('listening');
+                micButton.innerHTML = '🎤';
+                indicator.classList.remove('active');
+            }
+        }
+
+        function updateVoiceStatus(message) {
+            document.getElementById('voiceStatus').textContent = message;
+        }
+
+        function toggleListening() {
+            if (!recognition) {
+                updateVoiceStatus("❌ Microfono non disponibile");
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function updateVolume() {
+            // Il volume verrà applicato quando parla
+        }
+
+        function makeCharacterTalk(duration = 3000) {
+            if (isTalking) return;
+            
+            isTalking = true;
+            const mouth = document.getElementById('mouth');
+            const character = document.getElementById('character');
+            
+            mouth.classList.add('talking');
+            
+            // Gesti mentre parla
+            const gestures = ['gesture-excited', 'gesture-thinking'];
+            const randomGesture = gestures[Math.floor(Math.random() * gestures.length)];
+            character.parentElement.classList.add(randomGesture);
+            
+            setTimeout(() => {
+                mouth.classList.remove('talking');
+                character.parentElement.classList.remove(randomGesture);
+                isTalking = false;
+            }, duration);
+        }
+
+        function speakText(text) {
+            if (!speechSynthesis) return;
+            
+            speechSynthesis.cancel();
+            
+            // Rimuove emoji per pronuncia più chiara
+            const cleanText = text.replace(/[🌾🫒🐑🌍👨‍👩‍👧‍👦❤️👵🌤️😅✨👋😊🛒🕐💰⭐📍🤔💡🎯✅🗺️💬🔊🎤❌⚠️🔴]/g, '');
+            
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.voice = currentVoice;
+            utterance.volume = document.getElementById('volumeSlider').value / 100;
+            utterance.rate = 0.8; // Più lento, come un nonno
+            utterance.pitch = 0.9; // Più grave, voce da anziano
+            
+            utterance.onstart = function() {
+                updateVoiceStatus("🗣️ Nonno Andrea ti sta raccontando...");
+            };
+            
+            utterance.onend = function() {
+                updateVoiceStatus("🎤 Parla con nonno Andrea cliccando il microfono");
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        function showTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.style.display = 'block';
+            makeCharacterTalk(1500);
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        function addMessage(text, isUser = false) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            if (isUser) {
+                messageDiv.textContent = text;
+                messages.appendChild(messageDiv);
+            } else {
+                messages.appendChild(messageDiv);
+                typeWriter(messageDiv, text, 40);
+                makeCharacterTalk(text.length * 60);
+                
+                setTimeout(() => {
+                    speakText(text);
+                }, 800);
+            }
+            
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const userText = input.value.trim();
+            
+            if (!userText) return;
+            
+            addMessage(userText, true);
+            input.value = '';
+            
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateResponse(userText);
+                addMessage(response);
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function generateResponse(userText) {
+            const text = userText.toLowerCase();
+            
+            // Saluti
+            if (text.includes('ciao') || text.includes('buongiorno') || text.includes('salve')) {
+                return "👋 Ciao caro! Che piacere sentire una voce giovane! Raccontami, cosa ti piacerebbe sapere di me e della mia azienda?";
+            }
+            
+            if (text.includes('sì') || text.includes('si') || text.includes('volentieri') || text.includes('dimmi')) {
+                return responses.azienda;
+            }
+            
+            // Temi specifici
+            if (text.includes('olio') || text.includes('olive')) return responses.olio;
+            if (text.includes('pecore') || text.includes('formaggio') || text.includes('pecorino')) return responses.pecore;
+            if (text.includes('terra') || text.includes('biologico') || text.includes('naturale')) return responses.terra;
+            if (text.includes('famiglia') || text.includes('moglie') || text.includes('figli')) return responses.famiglia;
+            if (text.includes('passione') || text.includes('amore') || text.includes('piace')) return responses.passione;
+            if (text.includes('ricette') || text.includes('cucinare') || text.includes('mangiare')) return responses.ricette;
+            if (text.includes('stagioni') || text.includes('tempo') || text.includes('clima')) return responses.stagioni;
+            if (text.includes('difficoltà') || text.includes('problemi') || text.includes('fatica')) return responses.difficolta;
+            if (text.includes('sogni') || text.includes('futuro') || text.includes('speranza')) return responses.sogni;
+            if (text.includes('azienda') || text.includes('storia') || text.includes('iniziato')) return responses.azienda;
+            
+            if (text.includes('età') || text.includes('anni') || text.includes('vecchio')) {
+                return "😊 Ho 70 anni, ma mi sento come se ne avessi 40! Il lavoro nei campi mantiene giovani, sai. E poi, finché le mani reggono e il cuore batte forte, io continuo!";
+            }
+            
+            if (text.includes('grazie')) {
+                return "🥰 Ma grazie a te, caro! È bello vedere che ci sono ancora persone interessate alla vera tradizione. Mi scalda il cuore!";
+            }
+            
+            if (text.includes('dove') || text.includes('posizione')) {
+                return "📍 La mia azienda è qui in Umbria, sui colli tra Perugia e Assisi. Un posto benedetto dal Signore, con una vista che toglie il fiato. Se passi di qua, fermati!";
+            }
+            
+            if (text.includes('consigli') || text.includes('giovani')) {
+                return "💡 Il mio consiglio ai giovani? Abbiate pazienza. La natura ha i suoi tempi, non quelli del computer. E ricordate: le mani sporche di terra sono le più pulite del mondo!";
+            }
+            
+            // Risposta di default
+            const defaultResponses = [
+                "🤔 Interessante quello che dici... dimmi di più! Cosa ti incuriosisce della vita di campagna?",
+                "😊 Ah sì? E tu cosa fai nella vita? Ti piacerebbe sapere come si viveva una volta?",
+                "🌾 Bello parlare con te! Hai mai assaggiato prodotti fatti come si deve? Quelli che sanno di una volta?",
+                "👴 Raccontami un po' di te! Io sono sempre curioso di sentire le storie delle persone..."
+            ];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            initSpeechRecognition();
+            
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = initVoices;
+            } else {
+                initVoices();
+            }
+        });
+
+        if (document.readyState !== 'loading') {
+            initSpeechRecognition();
+            initVoices();
+        }
+
+        // Animazione iniziale
+        setTimeout(() => {
+            makeCharacterTalk(4000);
+        }, 1500);
+    </script>
+</body>
+</html>
